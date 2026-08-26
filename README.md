@@ -68,7 +68,14 @@ Custom operational flags:
 - Auto Sorted Lists
 
 ---
+## Screenshots
 
+### Monitor View
+
+![MonitorView](https://github.com/Mkhimer69/AWS-Magic-Monitor/blob/main/Screenshots/AWS-Magic-Monitor.png?raw=true)
+
+
+---
 ## 🛠️ Technical Highlights
 
 ### AWS Analytics Interception
