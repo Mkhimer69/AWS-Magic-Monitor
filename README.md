@@ -1,251 +1,111 @@
 # 🚀 AWS Magic Monitor
 
-A real-time workforce monitoring dashboard for Amazon Connect built as a Tampermonkey userscript.
+<p align="center">
+  <img src="https://img.shields.io/badge/version-3.0.0-orange?style=flat">
+  <img src="https://img.shields.io/badge/platform-Amazon%20Connect-232F3E?logo=amazonaws&logoColor=white">
+  <img src="https://img.shields.io/badge/engine-Tampermonkey-00485B?style=flat">
+  <img src="https://img.shields.io/badge/backend-none%20·%20fully%20client--side-success?style=flat">
+  <img src="https://img.shields.io/badge/latency-real--time-red?style=flat">
+</p>
 
-AWS Magic Monitor intercepts live Amazon Connect Analytics API calls and converts raw operational data into a lightweight command center for Real-Time Analysts (RTAs), Workforce Management (WFM), Operations Managers, and Team Leads.
-
----
+> A real-time workforce command center for **Amazon Connect** — a Tampermonkey
+> userscript that intercepts the Connect Analytics API live and turns raw agent
+> data into a draggable, black-and-gold monitoring panel for RTAs, WFM, ops
+> managers, and team leads. No external APIs, no backend, no databases.
 
 ## 📸 Overview
 
-AWS Magic Monitor transforms native AWS Connect analytics data into an interactive dashboard that provides:
+<p align="center"><img src="https://raw.githubusercontent.com/Mkhimer69/AWS-Magic-Monitor/main/Screenshots/AWS-Magic-Monitor.png" width="800" alt="AWS Magic Monitor panel"></p>
 
-- Queue Occupancy
-- Available Agents
-- Agents On Contact
-- Routing Profile Distribution
-- Compliance Flags
-- Longest Active Contacts
-- Real-Time Refresh Monitoring
-- CSV Export
-
-All data is collected directly from the Amazon Connect Analytics Dashboard without requiring external APIs, databases, or backend services.
-
----
+Everything runs on data the dashboard already loads — the script sits on the
+Connect Analytics fetch calls, boosts the page size to **1000 agents per pull**,
+and re-renders on every refresh without touching a server.
 
 ## ✨ Features
 
-### Real-Time Monitoring
+| Area | What you get |
+|---|---|
+| 🔴 **Live monitoring** | Fetch-level API interception, auto re-render on dashboard refresh, per-queue cards |
+| 📊 **Queue analytics** | Occupancy % (active slots / capacity), total HC, location breakdown |
+| 🟢 **Agent visibility** | Available / On Contact / Break / Lunch / Coaching chips, state durations, longest active contact per queue |
+| 🚨 **Compliance flags** | Configurable thresholds, flagged agents auto-expand, per-queue flag export |
+| 📋 **Routing profiles** | Distribution counts per routing profile per queue |
+| ⏭️ **Next activity** | What each agent is queued to do next, grouped and sorted |
+| 💾 **CSV export** | One click → `Agent_RealTime_Status.csv` of the entire pull |
+| 🖱 **UI** | Draggable, resizable, collapsible panel · gold-on-black executive theme · toasts |
 
-- Live AWS Connect API interception
-- Automatic refresh when dashboard data updates
-- Real-time queue occupancy calculations
-- Queue-based workforce visibility
+## 🚦 Compliance Flags
 
-### Agent Visibility
+| State | Flag threshold |
+|---|---|
+| Break | > 16 min |
+| Lunch | > 31 min |
+| Coaching/Feedback | > 31 min |
+| Meeting | > 31 min |
+| Missed | any (> 1 s) |
+| After Contact Work | > 8 min |
 
-- Available Agents
-- On Contact Agents
-- Duration Tracking
-- Longest Active Contacts
-- Missed Contact Detection
+Flag rules are trivially editable in the source — tune them to your operation.
 
-### Compliance Monitoring
+## ⚙️ How It Works
 
-Custom operational flags:
+1. **Intercept** — the script wraps `window.fetch` and watches for Connect
+   Analytics requests carrying `AGENT` + `CHANNEL` metrics.
+2. **Boost** — outgoing payloads are rewritten to `pageSize: 1000` so the pull
+   covers the whole floor instead of one page.
+3. **Extract** — agent name, state, state duration, routing profile, group,
+   next state, and active/capacity slots are parsed per row.
+4. **Aggregate** — agents group by routing profile → occupancy, chips, flags,
+   and profile distributions are computed per queue.
+5. **Render** — queue cards update in place; data is also mirrored to
+   `localStorage` for companion tooling.
 
-- Break > 16 minutes
-- Lunch > 31 minutes
-- Coaching > 31 minutes
-- Meeting > 31 minutes
-- Missed Contacts
-- After Contact Work > 6 minutes
+## 📥 Installation
 
-### Queue Analytics
+> *The distribution build is not yet published. When released, it will be a
+> one-click install; steps below.*
 
-- Occupancy %
-- Available Count
-- Contact Count
-- Routing Profile Distribution
-- Queue-Level Agent Visibility
+1. Install the [Tampermonkey](https://www.tampermonkey.net/) browser extension
+2. Install **AWS Magic Monitor** from the release/raw link *(coming soon)*
+3. Open your **Amazon Connect** dashboard and load the real-time agent metrics view
+4. The 🚀 panel appears top-left — drag it anywhere
 
-### Productivity Features
+## 🖥 Usage
 
-- CSV Export
-- Resizable Dashboard
-- Draggable Dashboard
-- Expandable Sections
-- Auto Sorted Lists
+- **Drag** the header to move · **− / +** collapses the panel · corner-resize
+- **🔄** triggers the dashboard's own refresh for an instant re-pull
+- **💾** exports the current full dataset to CSV
+- **💬** on the Flags row hands that queue's flags to the companion send hook
+- Expand any chip (🟢 ☕ 🍽️ 🎯 📞 🚨 📋 ⏭️) for sorted agent rows
 
----
-## Screenshots
+## 👥 Who Uses It
 
-### Monitor View
-
-![MonitorView](https://github.com/Mkhimer69/AWS-Magic-Monitor/blob/main/Screenshots/AWS-Magic-Monitor.png?raw=true)
-
-
----
-## 🛠️ Technical Highlights
-
-### AWS Analytics Interception
-
-The tool listens for AWS Analytics API calls:
-
-```javascript
-window.fetch = async (...args) => {
-    ...
-}
-```
-
-and extracts:
-
-- AGENT_VIEW_NAME
-- AGENT_VIEW_STATE
-- AGENT_VIEW_STATE_DURATION
-- AGENT_VIEW_PROFILE
-- ACTIVE_SLOTS
-- MAX_SLOTS
-
----
-
-### Queue Aggregation
-
-Agents are automatically grouped by routing profile:
-
-```javascript
-Driver
-Safety
-Rider
-Support
-```
-
-Queue occupancy is then calculated using:
-
-```text
-Occupancy % = Active Slots / Capacity
-```
-
----
-
-### Live Dashboard Rendering
-
-Data is rendered dynamically into:
-
-- Queue Cards
-- Agent Tables
-- Compliance Sections
-- Routing Profile Summaries
-
-without requiring page refreshes.
-
----
-
-## 🖥️ User Interface
-
-### Dashboard Header
-
-- Refresh Timestamp
-- Export Button
-- Collapse Button
-
-### Queue Cards
-
-Each queue contains:
-
-- Occupancy %
-- Available Agents
-- On Contact Agents
-- Flagged Agents
-- Routing Profiles
-
-### Expandable Sections
-
-```text
-Available
-On Contact
-Flags
-Routing Profiles
-```
-
----
-
-## 📂 Exporting Data
-
-Export all captured AWS analytics data into CSV:
-
-```text
-Agent_RealTime_Status.csv
-```
-
-Useful for:
-
-- Staffing Analysis
-- Historical Reviews
-- Workforce Planning
-- Operational Audits
-
----
-
-## 🚦 Current Version
-
-```text
-v3.0.0
-```
-
-### Included
-
-✅ AWS API Interception  
-✅ Queue Occupancy  
-✅ Agent Monitoring  
-✅ Longest Contact Tracking  
-✅ Compliance Flags  
-✅ Routing Profile Distribution  
-✅ CSV Export  
-✅ Draggable UI  
-✅ Resizable UI  
-✅ Real-Time Refresh Tracking  
-
----
+| Role | Value |
+|---|---|
+| Real-Time Analysts | Occupancy & staffing state across all queues at a glance |
+| Workforce Management | Routing profile trends, staffing imbalances, CSV for planning |
+| Operations Managers | Live queue health and compliance risk without opening six tabs |
+| Team Leads | Individual agent status and flag follow-ups |
 
 ## 🔮 Roadmap
 
-### v3.1
+- **v3.1** — queue filters · queue search · longest-available tracking
+- **v3.2** — queue health indicators · staffing-risk detection · occupancy threshold alerts
+- **v4.0** — screenshot mode · alert center · historical snapshots & trend analysis
 
-- Queue Filters
-- Longest Available Tracking
-- Queue Search
+## 🛠 Technology
 
-### v3.2
+JavaScript · Tampermonkey · Amazon Connect Analytics · fetch interception · HTML/CSS — 100% client-side.
 
-- Queue Health Indicators
-- Staffing Risk Detection
-- Occupancy Threshold Alerts
+## 🔒 Confidentiality Notice
 
-### v4.0
-
-- Screenshot Mode
-- Alert Center
-- Historical Snapshots
-- Trend Analysis
+The distribution build is currently private while internal thresholds and
+routing structures are sanitized. This repository documents the tool's
+capabilities, architecture, and roadmap — no production data, credentials, or
+company-sensitive logic is included.
 
 ---
 
-## 📊 Business Use Cases
-
-### Real-Time Analysts
-
-Monitor staffing and occupancy across queues.
-
-### Workforce Management
-
-Identify staffing imbalances and routing profile trends.
-
-### Operations Managers
-
-Track queue health and operational risk in real time.
-
-### Team Leads
-
-Review individual agent status and compliance concerns.
-
----
-
-## ⚙️ Technology Stack
-
-- JavaScript
-- Tampermonkey
-- Amazon Connect
-- Browser Fetch Interception
-- HTML
-- CSS
+<div align="center">
+<b>🚀 AWS Magic Monitor</b><br><i>Your whole floor. One panel. Zero backend.</i>
+</div>
