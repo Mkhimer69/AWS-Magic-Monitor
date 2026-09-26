@@ -15,7 +15,7 @@
 
 ## 📸 Overview
 
-<p align="center"><img src="https://raw.githubusercontent.com/Mkhimer69/AWS-Magic-Monitor/main/Screenshots/AWS-Magic-Monitor.png" width="800" alt="AWS Magic Monitor panel"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Mkhimer69/AWS-Magic-Monitor/main/assets/AWS-Magic-Monitor.png" width="800" alt="AWS Magic Monitor panel"></p>
 
 Everything runs on data the dashboard already loads — the script sits on the
 Connect Analytics fetch calls, boosts the page size to **1000 agents per pull**,
