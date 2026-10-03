@@ -2,24 +2,31 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-3.0.0-orange?style=flat">
-  <img src="https://img.shields.io/badge/platform-Amazon%20Connect-232F3E?logo=amazonaws&logoColor=white">
+  <img src="https://img.shields.io/badge/platform-Amazon%20Connect%20Admin-232F3E?logo=amazonaws&logoColor=white">
   <img src="https://img.shields.io/badge/engine-Tampermonkey-00485B?style=flat">
   <img src="https://img.shields.io/badge/backend-none%20·%20fully%20client--side-success?style=flat">
   <img src="https://img.shields.io/badge/latency-real--time-red?style=flat">
 </p>
 
-> A real-time workforce command center for **Amazon Connect** — a Tampermonkey
-> userscript that intercepts the Connect Analytics API live and turns raw agent
-> data into a draggable, black-and-gold monitoring panel for RTAs, WFM, ops
-> managers, and team leads. No external APIs, no backend, no databases.
+> A real-time workforce command center for the **Amazon Connect admin website** —
+> a Tampermonkey userscript that intercepts the Connect Analytics API live and
+> turns raw agent data into a draggable, black-and-gold monitoring panel for
+> RTAs, WFM, ops managers, and team leads. No external APIs, no backend, no
+> databases.
+
+> **🧭 Where it runs:** the **admin-side Amazon Connect dashboards**
+> (`my.connect.aws` — Analytics / Real-time metrics, used by supervisors and
+> WFM teams). This tool does **not** touch the agent workspace (CCP) — if you
+> want to reskin the agent workspace, that's
+> [**AWS Connect Theme Studio**](https://github.com/Mkhimer69/AWS-Connect-Theme-Studio).
 
 ## 📸 Overview
 
 <p align="center"><img src="https://raw.githubusercontent.com/Mkhimer69/AWS-Magic-Monitor/main/assets/AWS-Magic-Monitor.png" width="800" alt="AWS Magic Monitor panel"></p>
 
-Everything runs on data the dashboard already loads — the script sits on the
-Connect Analytics fetch calls, boosts the page size to **1000 agents per pull**,
-and re-renders on every refresh without touching a server.
+Everything runs on data the admin dashboards already load — the script sits on
+the Connect Analytics fetch calls, boosts the page size to **1000 agents per
+pull**, and re-renders on every refresh without touching a server.
 
 ## ✨ Features
 
@@ -67,7 +74,9 @@ Flag rules are trivially editable in the source — tune them to your operation.
 
 1. Install the [Tampermonkey](https://www.tampermonkey.net/) browser extension
 2. Install **AWS Magic Monitor** from the release/raw link *(coming soon)*
-3. Open your **Amazon Connect** dashboard and load the real-time agent metrics view
+3. Open the **Amazon Connect admin website** (`my.connect.aws`) and open an
+   analytics dashboard with real-time agent metrics — e.g. **Analytics →
+   Real-time metrics** (this is the admin side, not the agent workspace)
 4. The 🚀 panel appears top-left — drag it anywhere
 
 ## 🖥 Usage
@@ -79,6 +88,9 @@ Flag rules are trivially editable in the source — tune them to your operation.
 - Expand any chip (🟢 ☕ 🍽️ 🎯 📞 🚨 📋 ⏭️) for sorted agent rows
 
 ## 👥 Who Uses It
+
+Built for the **admin side** of Amazon Connect — supervisors, WFM and
+operations teams who already live in the admin dashboards:
 
 | Role | Value |
 |---|---|
@@ -95,7 +107,7 @@ Flag rules are trivially editable in the source — tune them to your operation.
 
 ## 🛠 Technology
 
-JavaScript · Tampermonkey · Amazon Connect Analytics · fetch interception · HTML/CSS — 100% client-side.
+JavaScript · Tampermonkey · Amazon Connect Analytics (admin dashboards) · fetch interception · HTML/CSS — 100% client-side.
 
 ## 🔒 Confidentiality Notice
 
